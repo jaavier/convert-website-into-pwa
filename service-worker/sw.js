@@ -4,7 +4,7 @@ self.addEventListener('install', function(e) {
 	e.waitUntil(
 		caches.open(cacheName).then(function(cache) {
 			console.log('CACHING /INDEX.HTML');
-			return cache.addAll([ '/index.html' ]);
+			return cache.addAll([ '/index.php' ]);
 		})
 	);
 	console.log('[Service Worker] Install');
