@@ -1,10 +1,10 @@
-var cacheName = 'pc-v2';
+var cacheName = 'marionavas-cache-v1';
 
 self.addEventListener('install', function(e) {
 	e.waitUntil(
 		caches.open(cacheName).then(function(cache) {
-			console.log('CACHING /INDEX.HTML');
-			return cache.addAll([ '/index.php' ]);
+			console.log('CACHING /INDEX.PHP');
+			return cache.addAll([ './index.php', './manifest.json', './' ]);
 		})
 	);
 	console.log('[Service Worker] Install');
@@ -33,8 +33,11 @@ self.addEventListener('fetch', function(e) {
 			return (
 				r ||
 				fetch(e.request)
-					.then(function(response) {
+					.then(async function(response) {
 						return caches.open(cacheName).then(function(cache) {
+							if (e.request.url.match(/\chrome\-extension/)) {
+								return response;
+							}
 							console.log('Caching new resource: ' + e.request.url);
 							cache.put(e.request, response.clone());
 							return response;
